@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { RecipeData } from '../page';
 import { usePathname } from 'next/navigation';
 import BackBtn from '@/components/BackBtn';
+import Loading from '@/components/Loading';
 
 export default function RecipeId() {
   const [result, setResult] = useState<RecipeData | null>(null);
@@ -28,18 +29,20 @@ export default function RecipeId() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 pt-23 text-white rounded-lg shadow-lg">
-      <BackBtn />
+    <Suspense fallback={<Loading />}>
+      <div className="max-w-4xl mx-auto p-6 pt-23 text-white rounded-lg shadow-lg">
+        <BackBtn />
 
-      <h1 className="text-4xl font-extrabold mb-4">{result?.title}</h1>
-      <h2 className="text-xl font-serif text-justify italic  mb-6 text-lg">
-        {result?.summary}
-      </h2>
-      <img
-        src={result?.image}
-        alt={result?.title}
-        className="w-full h-auto rounded-lg shadow-md object-cover"
-      />
-    </div>
+        <h1 className="text-4xl font-extrabold mb-4">{result?.title}</h1>
+        <h2 className="text-xl font-serif text-justify italic  mb-6 text-lg">
+          {result?.summary}
+        </h2>
+        <img
+          src={result?.image}
+          alt={result?.title}
+          className="w-full h-auto rounded-lg shadow-md object-cover"
+        />
+      </div>
+    </Suspense>
   );
 }

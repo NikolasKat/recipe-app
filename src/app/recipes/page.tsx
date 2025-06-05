@@ -1,8 +1,9 @@
 'use client';
 import BackBtn from '@/components/BackBtn';
+import Loading from '@/components/Loading';
 import { RecipeCard } from '@/components/RecipeCard';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 export interface RecipeData {
   summary: string;
@@ -43,24 +44,26 @@ export default function Recipes() {
 
   return (
     <>
-      <BackBtn />
-      <h1 className="text-4xl font-bold mt-20 text-center">
-        All recipes found
-      </h1>
-      <ul className="flex justify-center flex-wrap gap-6 mt-12">
-        {result.map((item: RecipeData) => {
-          return (
-            <RecipeCard
-              key={item.id}
-              summary={item.summary}
-              title={item.title}
-              cookingMinutes={item.cookingMinutes}
-              image={item.image}
-              id={item.id}
-            />
-          );
-        })}
-      </ul>
+      <Suspense fallback={<Loading />}>
+        <BackBtn />
+        <h1 className="text-4xl font-bold mt-20 text-center">
+          All recipes found
+        </h1>
+        <ul className="flex justify-center flex-wrap gap-6 mt-12">
+          {result.map((item: RecipeData) => {
+            return (
+              <RecipeCard
+                key={item.id}
+                summary={item.summary}
+                title={item.title}
+                cookingMinutes={item.cookingMinutes}
+                image={item.image}
+                id={item.id}
+              />
+            );
+          })}
+        </ul>
+      </Suspense>
     </>
   );
 }
